@@ -20,6 +20,11 @@ mkdir -p "$INSTALL_DIR/workspace"
 # Setup Python 3.11 virtual environment
 echo "Setting up Python virtual environment..."
 cd "$REPO_DIR"
+
+# Set robust network and timeout parameters for uv
+export UV_HTTP_TIMEOUT=300
+export UV_NET_RETRY=5
+
 uv venv .venv --python 3.11
 uv pip install -r backend/requirements.txt
 
