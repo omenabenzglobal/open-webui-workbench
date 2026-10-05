@@ -2,7 +2,7 @@ x.py
 yarn.lock
 .DS_Store
 node_modules
-/build
+# /build
 /.svelte-kit
 /package
 .env
@@ -25,7 +25,7 @@ static/pyodide/*
 
 # Distribution / packaging
 .Python
-build/
+# build/
 develop-eggs/
 dist/
 downloads/
@@ -311,3 +311,22 @@ cypress/videos
 cypress/screenshots
 .vscode/settings.json
 .cptr
+
+# Workbench runtime state & database isolation
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+*.sqlite
+*.sqlite3
+backend/data/
+workbench_tasks.db
+workspace/
+storage/
+
+# Agent workspace & local automation tooling
+.agent/
+AGENTS.md
+GEMINI.md
+tools/
+workflows/

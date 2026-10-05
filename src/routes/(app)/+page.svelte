@@ -3,6 +3,7 @@
 	import { toast } from 'svelte-sonner';
 
 	import Chat from '$lib/components/chat/Chat.svelte';
+	import WorkbenchDock from '$lib/components/workbench/WorkbenchDock.svelte';
 	import { page } from '$app/stores';
 
 	onMount(() => {
@@ -12,4 +13,6 @@
 	});
 </script>
 
-<Chat />
+<WorkbenchDock>
+	<Chat />
+</WorkbenchDock>

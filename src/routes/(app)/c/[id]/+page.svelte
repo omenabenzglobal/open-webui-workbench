@@ -2,6 +2,9 @@
 	import { page } from '$app/stores';
 
 	import Chat from '$lib/components/chat/Chat.svelte';
+	import WorkbenchDock from '$lib/components/workbench/WorkbenchDock.svelte';
 </script>
 
-<Chat chatIdProp={$page.params.id} />
+<WorkbenchDock>
+	<Chat chatIdProp={$page.params.id} />
+</WorkbenchDock>

@@ -1,0 +1,2 @@
+import{V as _,N as o,W as g,X as p,K as t,Y as v,Z as i,S as l,R as r,U as m,_ as E}from"./DtFjAPax.js";function x(n,d){let a=null,f=t;var s;if(t){a=m;for(var e=E(document.head);e!==null&&(e.nodeType!==v||e.data!==n);)e=i(e);if(e===null)l(!1);else{var y=i(e);e.remove(),r(y)}}t||(s=document.head.appendChild(_()));try{o(()=>{var u=g(()=>d(s));u.f|=p})}finally{f&&(l(!0),r(a))}}export{x as h};
+//# sourceMappingURL=DbBcrbRb.js.map

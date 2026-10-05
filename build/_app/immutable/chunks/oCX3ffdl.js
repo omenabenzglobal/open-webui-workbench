@@ -1,0 +1,2 @@
+import{K as o,M as v,N as y,O as T,P as f,Q as l,R as m,S as i,T as p,U as R}from"./DtFjAPax.js";import{B as A}from"./BKqLVPYF.js";function E(d,_,e){var s;o&&(s=R,v());var r=new A(d);y(()=>{var a=_()??null;if(o){var h=f(s),c=h===p,u=a!==null;if(c!==u){var t=l();m(t),r.anchor=t,i(!1),r.ensure(a,a&&(n=>e(n,a))),i(!0);return}}r.ensure(a,a&&(n=>e(n,a)))},T)}export{E as c};
+//# sourceMappingURL=oCX3ffdl.js.map
