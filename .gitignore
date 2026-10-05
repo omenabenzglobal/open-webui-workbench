@@ -325,8 +325,12 @@ workspace/
 storage/
 
 # Agent workspace & local automation tooling
-.agent/
-AGENTS.md
-GEMINI.md
-tools/
-workflows/
+/.agent/
+/AGENTS.md
+/GEMINI.md
+/tools/
+/workflows/
+
+# Whitelist workbench tools module
+!backend/open_webui/apps/workbench/tools/
+!backend/open_webui/apps/workbench/tools/**
