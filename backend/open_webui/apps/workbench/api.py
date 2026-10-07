@@ -140,7 +140,7 @@ async def default_provider_adapter(
         models_to_try = [
             "models/gemini-flash-lite-latest",
             "models/gemini-2.5-flash",
-            "models/gemini-flash-latest",
+            "gemini-2.5-flash",
         ]
     elif openai_key:
         endpoint_url = "https://api.openai.com/v1/chat/completions"
@@ -173,8 +173,8 @@ async def default_provider_adapter(
             }
             try:
                 resp = await client.post(endpoint_url, headers=headers, json=payload)
-                if resp.status_code in (429, 500, 502, 503) and attempt < 8:
-                    wait_time = (attempt // len(models_to_try) + 1) * 5
+                if resp.status_code in (404, 429, 500, 502, 503) and attempt < 8:
+                    wait_time = (attempt // len(models_to_try) + 1) * 3
                     log.warning(
                         "Provider %s HTTP %d, rotating model in %ds (attempt %d/9)…",
                         model_name,
@@ -187,8 +187,8 @@ async def default_provider_adapter(
                 resp.raise_for_status()
                 return resp.json()
             except httpx.HTTPStatusError as err:
-                if err.response.status_code in (429, 500, 502, 503) and attempt < 8:
-                    wait_time = (attempt // len(models_to_try) + 1) * 5
+                if err.response.status_code in (404, 429, 500, 502, 503) and attempt < 8:
+                    wait_time = (attempt // len(models_to_try) + 1) * 3
                     log.warning(
                         "Provider %s HTTP %d, rotating model in %ds (attempt %d/9)…",
                         model_name,
