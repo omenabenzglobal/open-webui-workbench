@@ -121,12 +121,17 @@ class SafeExecutor:
                 if not any(pattern in k_upper for pattern in self.SECRET_ENV_PATTERNS):
                     sanitized[k] = str(v)
 
-        # Ensure active environment toolchain directory is prioritized in PATH
+        # Ensure active environment toolchain directory and user local bins are prioritized in PATH
         venv_scripts = str(Path(sys.executable).parent)
-        if "PATH" in sanitized:
-            sanitized["PATH"] = f"{venv_scripts}{os.pathsep}{sanitized['PATH']}"
-        else:
-            sanitized["PATH"] = venv_scripts
+        user_local_bin = str(Path.home() / ".local" / "bin")
+        user_bin = str(Path.home() / "bin")
+        extra_paths = [venv_scripts, user_local_bin, user_bin, "/usr/local/bin", "/usr/bin", "/bin"]
+
+        curr_path = sanitized.get("PATH", "")
+        for p in extra_paths:
+            if os.path.exists(p) and p not in curr_path.split(os.pathsep):
+                curr_path = f"{p}{os.pathsep}{curr_path}" if curr_path else p
+        sanitized["PATH"] = curr_path
 
         return sanitized
 

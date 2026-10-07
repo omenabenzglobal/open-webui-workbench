@@ -249,19 +249,26 @@ class Tools:
             await self._emit_status(__event_emitter__, err_msg, done=True)
             return err_msg
 
-        try:
+        has_shell_ops = any(op in cmd_clean for op in ["|", "&&", "||", ";", ">", "<", "$", "`"])
+        if has_shell_ops:
             if os.name == "nt":
-                raw_args = shlex.split(cmd_clean, posix=False)
-                cmd_args = [
-                    arg[1:-1]
-                    if len(arg) >= 2 and ((arg[0] == '"' and arg[-1] == '"') or (arg[0] == "'" and arg[-1] == "'"))
-                    else arg
-                    for arg in raw_args
-                ]
+                cmd_args = ["cmd.exe", "/c", cmd_clean]
             else:
-                cmd_args = shlex.split(cmd_clean, posix=True)
-        except Exception:
-            cmd_args = cmd_clean.split()
+                cmd_args = ["/bin/bash", "-c", cmd_clean]
+        else:
+            try:
+                if os.name == "nt":
+                    raw_args = shlex.split(cmd_clean, posix=False)
+                    cmd_args = [
+                        arg[1:-1]
+                        if len(arg) >= 2 and ((arg[0] == '"' and arg[-1] == '"') or (arg[0] == "'" and arg[-1] == "'"))
+                        else arg
+                        for arg in raw_args
+                    ]
+                else:
+                    cmd_args = shlex.split(cmd_clean, posix=True)
+            except Exception:
+                cmd_args = cmd_clean.split()
 
         if not cmd_args:
             err_msg = "Error: Unable to parse command arguments."
