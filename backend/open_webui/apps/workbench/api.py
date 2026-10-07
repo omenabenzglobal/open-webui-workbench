@@ -69,7 +69,8 @@ class TerminalExecRequest(BaseModel):
 
 
 class TaskCreateRequest(BaseModel):
-    prompt: str = Field(..., description="Objective / instruction for the agent")
+    prompt: Optional[str] = Field("", description="Objective / instruction for the agent")
+    description: Optional[str] = Field("", description="Objective / description alias")
     title: Optional[str] = Field("", description="Optional human-readable title")
     model: Optional[str] = Field("", description="Target model name")
     step_limit: Optional[int] = Field(0, description="Maximum autonomous steps (0 = unlimited)")
@@ -274,6 +275,7 @@ def _build_tree_recursive(boundary: WorkspaceBoundary, current_dir: Path) -> Dic
 
 
 @router.get("/workspace/tree")
+@router.get("/files/list")
 async def get_workspace_tree():
     """Returns recursive JSON directory tree of the workspace."""
     workspace_boundary.ensure_workspace()
@@ -282,6 +284,7 @@ async def get_workspace_tree():
 
 
 @router.get("/workspace/file")
+@router.get("/files/read")
 async def read_workspace_file(path: str = Query(..., description="Relative path within workspace")):
     """Reads text file contents up to 50KB."""
     try:
@@ -300,6 +303,7 @@ async def read_workspace_file(path: str = Query(..., description="Relative path 
 
 
 @router.post("/workspace/file")
+@router.post("/files/write")
 async def write_workspace_file(req: FileWriteRequest):
     """Writes text file within the workspace boundary."""
     try:
@@ -393,20 +397,23 @@ async def list_tasks(limit: int = 50, status_filter: Optional[str] = None):
 
 
 @router.post("/tasks/create")
+@router.post("/tasks")
 async def create_task(req: TaskCreateRequest):
     """Registers a new autonomous task in the persistent TaskStore."""
+    prompt_text = req.prompt or req.description or req.title or "Autonomous Task"
     record = task_store.create_task(
-        prompt=req.prompt,
-        title=req.title or "",
+        prompt=prompt_text,
+        title=req.title or prompt_text[:30],
         step_limit=req.step_limit or 0,
     )
     # Initialize conversation history with the user prompt
     task_store.update_task(
         record.task_id,
-        history=[{"role": "user", "content": req.prompt}],
+        history=[{"role": "user", "content": prompt_text}],
         status=TaskStatus.PENDING,
     )
     return {
+        "id": record.task_id,
         "task_id": record.task_id,
         "title": record.title,
         "status": record.status.value,
