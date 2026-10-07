@@ -10,10 +10,34 @@
 </script>
 
 <div class="relative w-full h-full flex overflow-hidden">
-	<!-- Left Side Panel: Workspace Tree -->
+	<!-- Left Side Panel: Workspace Tree (Responsive Drawer on mobile, sidebar on desktop) -->
 	{#if showWorkspaceTree}
-		<div class="w-72 h-full flex-shrink-0 z-20 shadow-lg border-r border-gray-200 dark:border-gray-800 transition-all duration-200 ease-in-out">
-			<WorkspaceTree />
+		<!-- Mobile Backdrop -->
+		<button
+			type="button"
+			class="fixed inset-0 bg-black/60 backdrop-blur-xs z-30 md:hidden w-full h-full border-none cursor-pointer p-0 m-0"
+			on:click={() => (showWorkspaceTree = false)}
+			aria-label="Close workspace drawer"
+		></button>
+
+		<div class="fixed inset-y-0 left-0 z-40 w-72 md:relative md:z-20 md:w-72 h-full flex-shrink-0 shadow-2xl md:shadow-lg border-r border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 transition-all duration-200 ease-in-out flex flex-col">
+			<!-- Mobile Drawer Header with Close Button -->
+			<div class="md:hidden flex items-center justify-between px-3 py-2 border-b border-gray-200 dark:border-gray-800 bg-gray-100 dark:bg-gray-800 text-xs">
+				<span class="font-semibold text-gray-700 dark:text-gray-300">Workspace Files</span>
+				<button
+					type="button"
+					class="p-1 rounded text-gray-500 hover:text-gray-700 dark:hover:text-gray-300"
+					on:click={() => (showWorkspaceTree = false)}
+					aria-label="Close drawer"
+				>
+					<svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+					</svg>
+				</button>
+			</div>
+			<div class="flex-1 overflow-hidden">
+				<WorkspaceTree />
+			</div>
 		</div>
 	{/if}
 
@@ -53,7 +77,7 @@
 
 		<!-- Bottom Deck Panel: Terminal & Task Monitor -->
 		{#if showDeck}
-			<div class="h-72 w-full flex-shrink-0 z-20 border-t border-gray-200 dark:border-gray-800 flex flex-col bg-gray-950 shadow-2xl transition-all duration-200 ease-in-out">
+			<div class="h-64 sm:h-72 w-full flex-shrink-0 z-20 border-t border-gray-200 dark:border-gray-800 flex flex-col bg-gray-950 shadow-2xl transition-all duration-200 ease-in-out">
 				<!-- Deck Tabs Bar -->
 				<div class="px-3 py-1.5 bg-gray-900 border-b border-gray-800 flex items-center justify-between text-xs font-mono">
 					<div class="flex items-center gap-2">

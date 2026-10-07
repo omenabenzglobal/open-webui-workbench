@@ -82,6 +82,13 @@ class TaskCreateRequest(BaseModel):
 
 def _get_provider_credentials() -> Dict[str, str]:
     """Dynamically scan environment and Windows registry for active keys."""
+    try:
+        from dotenv import load_dotenv
+        for p in [Path(__file__).resolve().parents[4] / ".env", Path("./.env").resolve()]:
+            if p.exists():
+                load_dotenv(p)
+    except Exception:
+        pass
     creds = {}
     known_keys = [
         "GEMINI_API_KEY",
@@ -132,7 +139,7 @@ async def default_provider_adapter(
         api_key = gemini_key
         models_to_try = [
             "models/gemini-flash-lite-latest",
-            "models/gemini-3.5-flash",
+            "models/gemini-2.5-flash",
             "models/gemini-flash-latest",
         ]
     elif openai_key:
