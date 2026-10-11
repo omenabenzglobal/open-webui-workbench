@@ -1,4 +1,30 @@
-# Open WebUI 👋
+# OMENA Workbench 🚀
+### Autonomous Agent Workbench & Agentic IDE Distribution for Open WebUI
+**Developed & Maintained by [Omenabenz Global Ventures Limited](https://omenabenzglobalventures.online)**  
+**Live Production Deployment:** [https://omenabenz.online](https://omenabenz.online) | **Dossier:** [Technical Architecture & Evidence](docs/ARCHITECTURE_AND_EVIDENCE.md)
+
+---
+
+> [!NOTE]
+> **About this Distribution:**  
+> **OMENA Workbench** is an independently maintained, custom-engineered distribution built on top of [Open WebUI](https://github.com/open-webui/open-webui) (upstream `v0.11.4`). While preserving Open WebUI's rich conversational capabilities and respecting all upstream license and attribution terms, OMENA Workbench adds a dedicated autonomous software engineering subsystem and agentic IDE deck for full-cycle autonomous software development.
+
+### 🌟 Key OMENA Workbench Additions
+- 🤖 **Autonomous Agent Runtime (`backend/open_webui/apps/workbench/`)**: Multi-turn model ↔ tool execution engine driven by Google Gemini (`gemini-2.5-flash`), with SQLite task checkpointing and persistent telemetry.
+- 🩹 **Autonomous Self-Healing (`runtime/recovery.py`)**: Intercepts `stderr` execution failures, reflects diagnostic error tracebacks to the model, and patches code bugs automatically without human prompts.
+- 🛡️ **Workspace Boundary & Security Sandboxing (`security/workspace.py`, `security/executor.py`)**: Confined directory execution in `/workspace`, subprocess execution timeouts, and zero-secret environment variable sanitization.
+- 🚦 **3-Tier Execution Policy Engine (`security/policy.py`)**: Configurable policy modes (`SAFE`, `ASSISTED`, and `AUTONOMOUS`) with command pattern risk interception.
+- 💻 **Responsive Agentic IDE Deck (`src/lib/components/workbench/`)**:
+  - Live workspace file tree browser with inline code editor (`WorkspaceTree.svelte`).
+  - Sandboxed interactive terminal deck with stream logs (`TerminalDeck.svelte`).
+  - Real-time task receipts and execution progress monitor (`TaskMonitor.svelte`).
+  - Responsive mobile overlay drawer with touch backdrops (`WorkbenchDock.svelte` — iPhone 390×844 compatible).
+
+📖 *For the complete technical architecture, live AWS EC2 deployment metrics, and verified Phase 9 autonomous benchmark receipts, see [docs/ARCHITECTURE_AND_EVIDENCE.md](docs/ARCHITECTURE_AND_EVIDENCE.md).*
+
+---
+
+# Open WebUI Core Platform 👋
 
 ![GitHub stars](https://img.shields.io/github/stars/open-webui/open-webui?style=social)
 ![GitHub forks](https://img.shields.io/github/forks/open-webui/open-webui?style=social)
